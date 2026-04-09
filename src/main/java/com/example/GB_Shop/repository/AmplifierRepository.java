@@ -1,0 +1,7 @@
+package com.example.GB_Shop.repository;
+
+import com.example.GB_Shop.model.entities.Amplifier;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface AmplifierRepository extends JpaRepository<Amplifier, Long> {
+}
