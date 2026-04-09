@@ -1,8 +1,10 @@
 package com.example.GB_Shop.controller;
 
-import com.example.GB_Shop.model.entities.Product;
+import com.example.GB_Shop.model.dto.ProductRequestDto;
+import com.example.GB_Shop.model.dto.ProductResponseDto;
 import com.example.GB_Shop.model.enums.AvailabilityStatus;
 import com.example.GB_Shop.service.impl.ProductServiceImpl;
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,31 +17,37 @@ public class ProductController {
 
     private final ProductServiceImpl productService;
 
-    @PostMapping
-    public Product createProduct(@RequestBody Product product){
-        return productService.createProduct(product);
-    }
+//    @Operation(summary = "Save a product in DB")
+//    @PostMapping
+//    public ProductResponseDto createProduct(@RequestBody ProductRequestDto dto){
+//        return productService.createProduct(dto);
+//    }
 
+    @Operation(summary = "Get all products from DB")
     @GetMapping
-    public List<Product> getAllProducts(){
+    public List<ProductResponseDto> getAllProducts(){
         return productService.getAllProducts();
     }
 
+    @Operation(summary = "Get product by id")
     @GetMapping("/{id}")
-    public Product getProductById(@PathVariable Long id){
+    public ProductResponseDto getProductById(@PathVariable Long id){
         return productService.getProductById(id);
     }
 
+    @Operation(summary = "Update product")
     @PutMapping("/{id}")
-    public Product updateProduct(@PathVariable Long id,@RequestBody Product product){
-        return productService.updateProduct(id, product);
+    public ProductResponseDto updateProduct(@PathVariable Long id,@RequestBody ProductRequestDto dto){
+        return productService.updateProduct(id, dto);
     }
 
+    @Operation(summary = "Find product by availability")
     @GetMapping("/status/{status}")
-    public List<Product> findByStatus(@PathVariable AvailabilityStatus status){
-        return productService.findByStatus(status);
+    public List<ProductResponseDto> getByStatus(@PathVariable AvailabilityStatus status){
+        return productService.getByStatus(status);
     }
 
+    @Operation(summary = "Delete product")
     @DeleteMapping("/{id}")
     public void deleteProduct(@PathVariable Long id){
         productService.deleteProduct(id);

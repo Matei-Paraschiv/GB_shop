@@ -1,63 +1,80 @@
 package com.example.GB_Shop.service.impl;
 
+import com.example.GB_Shop.model.dto.ProductRequestDto;
+import com.example.GB_Shop.model.dto.ProductResponseDto;
 import com.example.GB_Shop.model.entities.Product;
 import com.example.GB_Shop.model.enums.AvailabilityStatus;
 import com.example.GB_Shop.repository.ProductRepository;
+import com.example.GB_Shop.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-import static com.example.GB_Shop.model.enums.AvailabilityStatus.NOT_AVAILABLE;
-
 @Service
 @RequiredArgsConstructor
-public class ProductServiceImpl implements ProductService{
+public class ProductServiceImpl implements ProductService {
 
     private final ProductRepository productRepository;
 
+//    @Override
+//    public ProductResponseDto createProduct(ProductRequestDto dto) {
+//
+//        Product product = new Product();
+//        product.setName(dto.name());
+//        product.setModel(dto.model());
+//        product.setPrice(dto.price());
+//        product.setDescription(dto.description());
+//        product.setReleaseYear(dto.releaseYear());
+//        product.setStatus(dto.status());
+//
+//        Product savedProduct = productRepository.save(product);
+//
+//        return toDto(savedProduct);
+//    }
+
     @Override
-    public Product createProduct(Product product) {
-        return productRepository.save(product);
+    public List<ProductResponseDto> getAllProducts() {
+        return productRepository.findAll().stream()
+                .map(this::toDto)
+                .toList();
     }
 
     @Override
-    public List<Product> getAllProducts() {
-        return productRepository.findAll();
+    public ProductResponseDto getProductById(Long id) {
+        return toDto(productRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Product not found with this id: " + id)));
     }
 
     @Override
-    public Product getProductById(Long id) {
-        return productRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Product not found with id: " + id));
-    }
-
-    @Override
-    public Product updateProduct(Long id, Product product) {
+    public ProductResponseDto updateProduct(Long id, ProductRequestDto dto) {
         Product productFound = productRepository.findById(id).orElseThrow(() -> new RuntimeException("Product not found: " + id));
-        productFound.setName(product.getName());
-        productFound.setPrice(product.getPrice());
-        productFound.setModel(product.getModel());
-        productFound.setReleaseYear(product.getReleaseYear());
+        productFound.setName(dto.name());
+        productFound.setPrice(dto.price());
+        productFound.setModel(dto.model());
+        productFound.setDescription(dto.description());
+        productFound.setStatus(dto.status());
+        productFound.setReleaseYear(dto.releaseYear());
 
-        return productRepository.save(productFound);
+        return toDto(productRepository.save(productFound));
     }
 
     @Override
-    public List<Product> findByStatus(AvailabilityStatus status) {
+    public List<ProductResponseDto> getByStatus(AvailabilityStatus status) {
 
-        List<Product> productList = productRepository.findByStatus(status);
-
-        if (productList.isEmpty()){
-            throw new RuntimeException("Product not available");
-        }
-
-        return productList;
-
+        return productRepository.getByStatus(status).stream()
+                .map(this::toDto)
+                .toList();
     }
 
     @Override
     public void deleteProduct(Long id) {
+        if (!productRepository.existsById(id)) {
+            throw new RuntimeException("Product not found");
+        }
+
         productRepository.deleteById(id);
     }
+
+
 }
