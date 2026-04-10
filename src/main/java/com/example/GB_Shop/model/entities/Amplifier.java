@@ -13,9 +13,9 @@ import lombok.NoArgsConstructor;
 @Data
 public class Amplifier extends Product{
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+//    @Id
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    private Long id;
 
 //    private String name;
     private Integer wattage; //voltaj

@@ -16,14 +16,18 @@ public interface AmplifierService {
     public void deleteAmplifier(Long id);
 
     public default AmplifierResponseDto toDto(Amplifier amplifier){
-        AmplifierResponseDto dto = new AmplifierResponseDto(
+        return new AmplifierResponseDto(
                 amplifier.getId(),
                 amplifier.getName(),
+                amplifier.getModel(),
+                amplifier.getPrice(),
+                amplifier.getDescription(),
+                amplifier.getReleaseYear(),
+                amplifier.getStatus().name(),
                 amplifier.getWattage(),
                 amplifier.getTechnology(),
                 amplifier.getEffects()
         );
-        return dto;
     }
 
     public List<AmplifierResponseDto> getAmplifierByTechnology(AmplifierTechnology technology);

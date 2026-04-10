@@ -3,9 +3,11 @@ package com.example.GB_Shop.service.impl;
 import com.example.GB_Shop.model.dto.AmplifierRequestDto;
 import com.example.GB_Shop.model.dto.AmplifierResponseDto;
 import com.example.GB_Shop.model.entities.Amplifier;
+import com.example.GB_Shop.model.entities.Brand;
 import com.example.GB_Shop.model.enums.AmplifierTechnology;
 import com.example.GB_Shop.model.enums.AvailabilityStatus;
 import com.example.GB_Shop.repository.AmplifierRepository;
+import com.example.GB_Shop.repository.BrandRepository;
 import com.example.GB_Shop.service.AmplifierService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -17,14 +19,19 @@ import java.util.List;
 public class AmplifierServiceImpl implements AmplifierService {
 
     private final AmplifierRepository amplifierRepository;
+    private final BrandRepository brandRepository;
 
     @Override
     public AmplifierResponseDto createAmplifier(AmplifierRequestDto dto) {
+
+        Brand brand = brandRepository.findById(dto.brand_id())
+                .orElseThrow(() -> new RuntimeException("Brand not found with id: " + dto.brand_id()));
+
         Amplifier amplifier = new Amplifier();
 
         amplifier.setName(dto.name());
-        amplifier.setPrice(dto.price());
         amplifier.setModel(dto.model());
+        amplifier.setPrice(dto.price());
         amplifier.setDescription(dto.description());
         amplifier.setReleaseYear(dto.releaseYear());
         amplifier.setStatus(AvailabilityStatus.valueOf(dto.status()));
@@ -52,15 +59,24 @@ public class AmplifierServiceImpl implements AmplifierService {
 
     @Override
     public AmplifierResponseDto updateAmplifier(Long id, AmplifierRequestDto dto) {
+        Amplifier ampFound = amplifierRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Amplifier not found with this id: " + id));
 
-        Amplifier ampFound = amplifierRepository.findById(id).orElseThrow(() -> new RuntimeException("Amplifier not found"));
+        Brand brand = brandRepository.findById(dto.brand_id())
+                .orElseThrow(() -> new RuntimeException("Brand not found with id: " + dto.brand_id()));
+
         ampFound.setName(dto.name());
+        ampFound.setModel(dto.model());
+        ampFound.setPrice(dto.price());
+        ampFound.setDescription(dto.description());
+        ampFound.setReleaseYear(dto.releaseYear());
+        ampFound.setStatus(AvailabilityStatus.valueOf(dto.status()));
+
         ampFound.setWattage(dto.wattage());
         ampFound.setTechnology(String.valueOf(dto.technology()));
         ampFound.setEffects(dto.hasEffects());
-        ampFound.setPrice(dto.price());
-        ampFound.setReleaseYear(dto.releaseYear());
-        ampFound.setStatus(AvailabilityStatus.valueOf(dto.status()));
+
+        ampFound.setBrand(brand);
 
         return toDto(amplifierRepository.save(ampFound));
     }

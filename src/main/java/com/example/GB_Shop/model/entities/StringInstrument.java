@@ -2,14 +2,21 @@ package com.example.GB_Shop.model.entities;
 
 import com.example.GB_Shop.model.enums.StringInstrumentType;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "string_instruments") // Sau doar "guitars"
+@PrimaryKeyJoinColumn(name = "id")
+@AllArgsConstructor
+@NoArgsConstructor
+@Data
 public class StringInstrument extends Product {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+//    @Id
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    private Long id;
     
     private Integer numberOfStrings;
     private Integer numberOfFrets;
