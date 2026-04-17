@@ -16,8 +16,22 @@ public class BrandServiceImpl implements BrandService {
 
     private final BrandRepository brandRepository;
 
+//    @Override
+//    public BrandResponseDto createBrand(BrandRequestDto dto) {
+//        Brand brand = new Brand();
+//        brand.setName(dto.name());
+//        brand.setCountryOfOrigin(dto.countryOfOrigin());
+//
+//        return toDto(brandRepository.save(brand));
+//    }
+
     @Override
     public BrandResponseDto createBrand(BrandRequestDto dto) {
+
+        if (brandRepository.existsByName(dto.name())) {
+            throw new RuntimeException("Brand already exists with name: " + dto.name());
+        }
+
         Brand brand = new Brand();
         brand.setName(dto.name());
         brand.setCountryOfOrigin(dto.countryOfOrigin());
