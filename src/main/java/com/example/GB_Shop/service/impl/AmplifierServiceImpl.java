@@ -39,6 +39,7 @@ public class AmplifierServiceImpl implements AmplifierService {
         amplifier.setWattage(dto.wattage());
         amplifier.setTechnology(String.valueOf(dto.technology()));
         amplifier.setEffects(dto.hasEffects());
+        amplifier.setBrand(brand);
 
         Amplifier savedAmp = amplifierRepository.save(amplifier);
         return toDto(savedAmp);

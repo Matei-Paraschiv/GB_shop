@@ -1,5 +1,3 @@
-Iata textul pentru README.md fara diacritice, gata de dat paste:
-
 🎸 GB_Shop - Guitar & Bass Management System
 GB_Shop este o aplicatie backend dezvoltata in Spring Boot, conceputa pentru gestionarea inventarului unui magazin de instrumente muzicale. Proiectul pune accent pe o arhitectura robusta, utilizarea corecta a maparilor JPA si o strategie de testare riguroasa.
 
@@ -10,15 +8,15 @@ Spring Boot 3.x
 
 Spring Data JPA (Hibernate)
 
-H2 Database (pentru mediul de testare)
+H2 Database 
 
-PostgreSQL/MySQL (pentru mediul de productie)
+PostgreSQL
 
 Lombok
 
 JUnit 5 & Mockito
 
-Swagger/OpenAPI (Documentare API)
+Swagger/OpenAPI 
 
 🏗️ Arhitectura Proiectului
 Aplicatia urmeaza modelul Layered Architecture pentru a asigura separarea responsabilitatilor:
